@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/racecar.dir/src/main.cpp.o -o racecar  lvgl/lib/liblvgl.a src/Protocol/libProtocol.a lvgl/lib/liblvgl_thorvg.a lvgl/lib/liblvgl_examples.a lvgl/lib/liblvgl_demos.a lvgl/lib/liblvgl.a lvgl/lib/liblvgl_thorvg.a lvgl/lib/liblvgl_examples.a lvgl/lib/liblvgl_demos.a 
