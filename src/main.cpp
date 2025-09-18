@@ -14,6 +14,7 @@
 
 #define HOR 240
 #define VER 320
+#define LCD_BUF_LINES 180
 
 static SPIDevice teensy("/dev/spidev0.1",1000000,0,8);
 static SPIDevice display("/dev/spidev0.0",1000000,0,8);
@@ -29,7 +30,7 @@ static void cmdCallBack(lv_display_t *disp, const uint8_t *cmd, size_t cmd_size,
         write(display.getFD(), cmd,1);
 }
 
-static void lcd_send_color(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, uint8_t * param, size_t param_size){
+static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, uint8_t * param, size_t param_size){
         if(cmd && cmd_size > 0){
             write(display.getFD(),cmd,cmd_size);
         }
@@ -40,18 +41,29 @@ static void lcd_send_color(lv_display_t * disp, const uint8_t *cmd, size_t cmd_s
         lv_display_flush_ready(disp);
 }
 
+void flush_cb(lv_display_t * display, const lv_area_t * area, uint8_t * px_map){
+    uint16_t * buf16 = (uint16_t*)px_map;
+    int32_t x,y;
+    for(y = area->y1; y <= area->y2; y++){
+        for(x = area->x2;x <= area->x2; x++){
+            put_px(x,y,*buf16);
+            buf16++;
+        }
+    }
+    lv_display_flush_ready(display);
+}
 
 int main(int argvc, char ** argv){
 
     lv_init();
     lv_tick_set_cb(get_millisec);
-    lv_display_t *ili9341disp = lv_ili9341_create(HOR, VER,LV_LCD_FLAG_NONE , cmdCallBack,lcd_send_color);
+    lv_display_t *ili9341disp = lv_ili9341_create(HOR, VER,LV_LCD_FLAG_NONE , cmdCallBack,color_cb);
     lv_display_set_rotation(ili9341disp, LV_DISPLAY_ROTATION_90);
-    lv_demo_widgets();
-    uint8_t buf1 = NULL;
-    uint8_t buf2 = NULL;
+    uint8_t *buf1 = NULL;
+    uint8_t *buf2 = NULL;
     uint32_t buf_size = HOR * LCD_BUF_LINES * lv_color_format_get_size(lv_display_get_color_format(ili9341disp));
-    buf1= lv_malloc(buf_size);
+    buf1 = (uint8_t*)lv_malloc(buf_size);
+    buf2 = (uint8_t*)lv_malloc(buf_size);
     
     if(buf1 == NULL){
         LV_LOG_ERROR("display draw buffer malloc failed");
@@ -59,8 +71,6 @@ int main(int argvc, char ** argv){
     }
     
     lv_display_set_buffers(ili9341disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
-    
-    ui_init(ili9341disp);
     
     while(1){
         uint32_t timer = lv_timer_handler();
