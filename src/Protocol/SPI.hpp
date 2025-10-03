@@ -11,18 +11,14 @@ class SPIDevice{
         int file_descriptor;
         std:: string file_path;
         uint32_t clk_Speed;
-        uint8_t mode;
         uint8_t bits;
 
     public:
-    SPIDevice(std:: string file_path, uint32_t clk_Speed, uint8_t mode, const uint8_t bits);
+    SPIDevice(std:: string file_path, uint32_t clk_Speed, uint8_t mode, const uint8_t bits, bool read, bool write);
     ~SPIDevice();
-    ssize_t write(const std::vector<uint8_t>& rx );
-    ssize_t read(const std::vector<uint8_t>& tx);
-    bool setSpeed(uint32_t speed);
-    bool setMode(uint8_t mode);
-    bool setBits(uint8_t bits);
+    std::vector<uint8_t> spiRead(uint8_t reg, size_t len);
     int getFD();
+    uint32_t getClk();
 };
 
 #endif
