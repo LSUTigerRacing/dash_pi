@@ -1,0 +1,6 @@
+lvgl/CMakeFiles/lvgl.dir/src/draw/eve/lv_eve.c.o: \
+ /home/Dash/Documents/dash_pi/lvgl/src/draw/eve/lv_eve.c \
+ /usr/include/stdc-predef.h \
+ /home/Dash/Documents/dash_pi/lvgl/src/draw/eve/lv_draw_eve.h \
+ /home/Dash/Documents/dash_pi/lvgl/src/draw/eve/../../lv_conf_internal.h \
+ /home/Dash/Documents/dash_pi/lv_conf.h
