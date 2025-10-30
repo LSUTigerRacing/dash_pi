@@ -1,0 +1,9 @@
+<project>
+  <assets>
+    <font path="fonts/Arimo-Bold.ttf" name="ArimoBold"/>
+  </assets>
+
+  <screens>
+    <screen path="screens/screens.xml"/>
+  </screens>
+</project>

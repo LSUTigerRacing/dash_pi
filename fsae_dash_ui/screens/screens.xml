@@ -1,0 +1,11 @@
+<screen id="MainDash" width="480" height="320">
+  <obj id="background" x="0" y="0" width="480" height="320" bg_color="#101010"/>
+
+  <instance component="Speedometer" x="150" y="20"/>
+
+  <instance component="EngineTemp" x="20" y="220"/>
+  <instance component="BatteryTemp" x="260" y="220"/>
+
+  <label id="gear_label" text="Gear: N" x="20" y="10" width="150" height="30" font="ArimoBold" size="18"/>
+  <label id="time_label" text="00:00" x="330" y="10" width="120" height="30" font="ArimoBold" size="18"/>
+</screen>

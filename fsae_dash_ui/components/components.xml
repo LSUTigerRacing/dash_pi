@@ -1,0 +1,17 @@
+<component id="EngineTemp">
+    <label id="engine_label" text="Engine Temp" x="0" y="0" width="150" height="30" font="ArimoBold" size="20"/>
+    <bar id="engine_bar" x="0" y="40" width="200" height="20" range_min="0" range_max="120" value="0"/>
+    <label id="engine_value" text="0 °C" x="210" y="40" width="60" height="20" font="ArimoBold" size="16"/>
+</component>
+
+<component id="BatteryTemp">
+    <label id="battery_label" text="Battery Temp" x="0" y="0" width="150" height="30" font="ArimoBold" size="20"/>
+    <bar id="battery_bar" x="0" y="40" width="200" height="20" range_min="0" range_max="120" value="0"/>
+    <label id="battery_value" text="0 °C" x="210" y="40" width="60" height="20" font="ArimoBold" size="16"/>
+</component>
+
+<component id="Speedometer">
+    <label id="speed_label" text="Speed" x="0" y="0" width="150" height="30" font="ArimoBold" size="22"/>
+    <gauge id="speed_gauge" x="0" y="40" width="180" height="180" range_min="0" range_max="200" value="0"/>
+    <label id="speed_value" text="0 km/h" x="60" y="230" width="120" height="30" font="ArimoBold" size="20"/>
+</component>
