@@ -1,0 +1,88 @@
+<globals>
+    <api>
+        <enumdef name="gear_state"></enumdef>
+   </api>
+
+   <consts>
+        <int name="unit_sm" value="6"/>
+        <int name="unit_md" value="12"/>
+        <int name="unit_lg" value="18"/>
+        <int name="unit_xl" value="24"/>
+        
+        <percentage name="opa_muted" value="20%"/>
+        <percentage name="opa_half" value="50%"/>
+        
+        <color name="purple" value="#A020F0"/>
+        <color name="gold" value="#FFD700"/>
+
+        <color name="bg_primary" value="0x000000"/>
+        <color name="bg_secondary" value="0x1C1C1C"/>
+        <color name="bg_container" value="0x2C3E50"/>
+        <color name="bg_track" value="0x1A252F"/>
+        
+        <color name="text_primary" value="0xFFFFFF"/>
+        <color name="text_secondary" value="0xECF0F1"/>
+        <color name="text_muted" value="0x888888"/>
+        
+        <color name="gg_normal" value="0x00FF00"/>
+        <color name="gg_normal_grad" value="0xFFD700"/>
+        <color name="gauge_warm" value="0xFF6600"/>
+		<color name="gauge_warm_grad" value="0xFFD700"/>
+		<color name="gauge_hot" value="0xFF0000"/>
+		<color name="gauge_hot_grad" value="0xFF6600"/>
+        
+        <color name="warning_engine" value="0xFF0000"/>
+        <color name="warning_battery" value="0xFFFF00"/>
+        <color name="warning_oil" value="0xFF6600"/>
+        <color name="status_ok" value="0x00FF00"/>
+        
+        <color name="rpm_normal" value="0x00FF00"/>
+		<color name="rpm_caution" value="0xFFFF00"/>
+		<color name="rpm_danger" value="0xFF0000"/>
+
+        <color name="border_primary" value="0x34495E"/>
+		<color name="border_secondary" value="0x2C3E50"/>
+        
+        <int name="max_temp_norm" value="80"/>
+        <int name="max_temp_warm" value="100"/>
+        <int name="min_temp_hot" value="100"/>
+
+        <int name="rpm_shift_point" value="11000"/>
+        <int name="rpm_redline" value="12000"/>
+   </consts>
+
+    <subjects>
+        <int name="rpm" value="0" help="Engine RPM (0-12000)"/>
+        <int name="speed_kmh" value="0" help="Vehicle Speed (km/h)"/>
+        <int name="gear" value="0" help="Current Gear (0=Neutral, 1-6=Gears)"/>
+
+        <int name="coolant_temp" value="0" help="Coolant Temperature (Celsius)"/>
+        <int name="oil_temp" value="0" help="Oil Temperature (Celsius)"/>
+        <int name="brake_temp" value="0" help="Brake Temperature (Celsius)"/>
+
+        <int name="oil_pressure" value="0" help="Oil Pressure (PSI)"/>
+        <int name="fuel_pressure" value="0" help="Fuel Pressure (PSI)"/>
+
+        <int name="battery_voltage" value="128" help="Battery Voltage * 10 (for ex. 12.8 V = 128)"/>
+        <int name="fuel_level" value="75" help="Fuel Level (%)"/>
+
+        <int name="warning_engine" value="0" help="0:off 1:on"/>
+        <int name="warning_battery" value="0" help="0:off 1:on"/>
+        <int name="warning_oil_pressure" value="0" help="0:off 1:on"/>
+        <int name="warning_overheat" value="0" help="0:off 1:on"/>
+
+        <int name="lap_time_min" value="0" help="Lap Time (minutes)"/>
+		<int name="lap_time_sec" value="0" help="Lap Time (seconds)"/>
+		<int name="lap_time_ms" value="0" help="Lap Time (milliseconds)"/>
+		<int name="lap_count" value="0" help="Current Lap #"/>
+
+        <int name="data_logging" value="0" help="0:off 1:recording"/>
+		<int name="drs_active" value="0" help="0:off 1:active (Drag Reduction System)"/>
+		<int name="traction_control" value="1" help="0:off 1:on"/>
+		<int name="abs_active" value="1" help="0:off 1:on (Anti-Lock Braking)"/>
+
+        <int name="brightness" value="100" help="Screen Brightness (%)"/>
+		<int name="temp_unit" value="0" help="0:Celsius 1:Fahrenheit"/>
+		<int name="speed_unit" value="0" help="0:km/h 1:mph"/>
+   </subjects>
+</globals>
