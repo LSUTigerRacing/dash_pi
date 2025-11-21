@@ -12,6 +12,7 @@
 #include "../lvgl/src/display/lv_display.h"
 #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
 #include "../lvgl/src/stdlib/lv_mem.h"
+#include "uart.hpp"
 
 #define HOR 240
 #define VER 320
@@ -22,13 +23,13 @@
 static uint32_t get_millisec(){
   auto clock = std::chrono::high_resolution_clock::now();
   auto duration = clock.time_since_epoch();
-  auto millisec = std::chrono::duration_cast<chrono::milliseconds>(duration).count();
+  auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
   return (uint32_t) millisec;  
 }
 
 //Sends commands with its parameter to the display
 static void cmdCallBack(lv_display_t *disp, const uint8_t *cmd, size_t cmd_size, const uint8_t *param, size_t param_size){
-    vector<uint8_t> cmdBuf;
+    std::vector<uint8_t> cmdBuf;
     cmdBuf.insert(cmdBuf.end(),cmd,cmd + cmd_size);
     cmdBuf.insert(cmdBuf.end(), cmd, cmd + cmd_size);
     write(display.getFD(),cmdBuf.data(),cmd_size + param_size);
@@ -44,7 +45,7 @@ static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, u
         }
         lv_display_flush_ready(disp);
 }
-Draws content to the screen after the Pi has fully rendered them in
+//Draws content to the screen after the Pi has fully rendered them in
 void my_flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map){
     uint16_t * buf16 = (uint16_t*)px_map;
     int32_t x,y;
@@ -65,6 +66,9 @@ lv_display_t *ili9341disp = lv_ili9341_create(HOR, VER,LV_LCD_FLAG_NONE , cmdCal
 int main(int argvc, char ** argv){
     
     lv_init();
+
+    uart_init();
+
     lv_tick_set_cb(get_millisec);
     lv_display_set_rotation(ili9341disp, LV_DISPLAY_ROTATION_90); //Makes the screen display horizontal
     uint8_t *buf1 = NULL;
@@ -75,11 +79,74 @@ int main(int argvc, char ** argv){
       if(buf1 == NULL){
         LV_LOG_ERROR("display draw buffer malloc failed");
         return;
-    }
-    
+    };
+
     lv_display_set_buffers(ili9341disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
-    
+
+    lv_obj_t *brake_label =lv_label_create(lv_screen_active());
+    lv_obj_set_pos(brake_label,10,10);
+    lv_label_set_text(brake_label, "Brake: --");
+
+    lv_obj_t *rpm_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(rpm_label, 10, 30);
+    lv_label_set_text(rpm_label, "RPM: --");
+
+    lv_obj_t *motor_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(motor_label, 10, 50);
+    lv_label_set_text(motor_label, "Brake: --");
+
+    lv_obj_t *temp_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(temp_label, 10, 70);
+    lv_label_set_text(temp_label, "temp: --");
+
+    lv_obj_t *coolant_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(coolant_label, 10, 90);
+    lv_label_set_text(coolant_label, "Coolant: --");
+
+    lv_obj_t *can_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(can_label, 10, 110);
+    lv_label_set_text(can_label, "Can: --");
+
+    lv_obj_t *fault_label = lv_label_create(lv_screen_active());
+    lv_obj_set_pos(fault_label, 10, 130);
+    lv_label_set_text(fault_label, "Fault: --");
     while(1){
+        uart_update();
+
+        if (uart_has_new_data())
+        {
+            UARTData data = uart_get_data();
+
+            // 
+            lv_label_set_text_fmt(brake_label, "Brake: %u°C",
+                                  data.brake_temperature);
+
+            // Motor RPM
+            lv_label_set_text_fmt(rpm_label, "RPM: %u", data.motor_rpm);
+
+            // Motor voltage and current
+            lv_label_set_text_fmt(motor_label, "V:%u I:%u",
+                                  data.motor_voltage, data.motor_current);
+
+            // Motor temperature
+            lv_label_set_text_fmt(temp_label, "Motor: %u°C",
+                                  data.motor_temperature);
+
+            // Coolant temperature
+            lv_label_set_text_fmt(coolant_label, "Coolant: %u°C",
+                                  data.coolant_temperature);
+
+            // CAN data
+            lv_label_set_text_fmt(can_label, "CAN ID: 0x%04X",
+                                  data.can_id_1);
+            
+            //
+            if (data.has_active_fault)
+            {
+                lv_label_set_text_fmt(fault_label, "FAULT: 0x%02X Sev:%u",
+                                      data.fault_code, data.fault_severity);
+            }
+        }
         uint32_t timer = lv_timer_handler();
         if(timer == LV_NO_TIMER_READY){
             timer = LV_DEF_REFR_PERIOD;
@@ -87,4 +154,5 @@ int main(int argvc, char ** argv){
         }
         lv_display_flush_ready(ili9341disp);
     }
+    uart_cleanup();
 }
