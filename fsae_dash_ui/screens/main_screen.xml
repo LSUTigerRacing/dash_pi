@@ -1,0 +1,194 @@
+<screen permanent="true">
+    <consts>
+        <!-- Top row large values -->
+        <string name="default_rpm" value="2495"/>
+        <string name="default_speed" value="40"/>
+        
+        <!-- Left column labels -->
+        <string name="voltage_label" value="Voltage"/>
+        <string name="fuel_pressure_label" value="Fuel Pressure"/>
+        <string name="oil_pressure_label" value="Oil Pressure"/>
+        
+        <!-- Left column values -->
+        <string name="voltage_value" value="13.6 V"/>
+        <string name="fuel_pressure_value" value="51.2 PSI"/>
+        <string name="oil_pressure_value" value="47 PSI"/>
+        
+        <!-- Right column labels -->
+        <string name="oil_pressure_top_label" value="Oil Pressure"/>
+        <string name="coolant_temp_label" value="Coolant Temp"/>
+        <string name="oil_temp_label" value="Oil Temp"/>
+        <string name="map_label" value="MAP"/>
+        
+        <!-- Right column values -->
+        <string name="oil_pressure_top_value" value="407"/>
+        <string name="coolant_temp_value" value="86"/>
+        <string name="oil_temp_value" value="96"/>
+        <string name="map_value" value="14.0"/>
+        
+        <!-- Units -->
+        <string name="rpm_unit" value="RPM"/>
+        <string name="speed_unit" value="MPH"/>
+    </consts>
+    
+    <styles>
+        <!-- Background styles -->
+        <style name="bg_dark_red" bg_color="#4A0000" bg_opa="100%"/>
+        <style name="bg_transparent" bg_opa="0%" border_width="0"/>
+        
+        <!-- Text styles -->
+        <style name="text_large_white" text_color="#FFFFFF" text_font="roboto_bold_72"/>
+        <style name="text_medium_white" text_color="#FFFFFF" text_font="roboto_bold_36"/>
+        <style name="text_label_white" text_color="#FFFFFF" text_font="roboto_regular_14"/>
+        <style name="text_value_white" text_color="#FFFFFF" text_font="roboto_bold_24"/>
+        <style name="text_small_gray" text_color="#AAAAAA" text_font="roboto_regular_12"/>
+    </styles>
+    
+    <view>
+        <!-- Main Container -->
+        <lv_obj width="800" height="480">
+            <style name="bg_dark_red"/>
+            
+            <!-- Top Row: RPM and Speed -->
+            <lv_obj width="800" height="150" align="top_mid" y="0">
+                <style name="bg_transparent"/>
+                
+                <!-- RPM (Left) -->
+                <lv_obj width="400" height="150" align="left_mid">
+                    <style name="bg_transparent"/>
+                    
+                    <lv_label text="#default_rpm" align="center" y="-10">
+                        <style name="text_large_white"/>
+                    </lv_label>
+                    
+                    <lv_label text="#rpm_unit" align="center" y="50">
+                        <style name="text_small_gray"/>
+                    </lv_label>
+                </lv_obj>
+                
+                <!-- Speed (Right) -->
+                <lv_obj width="400" height="150" align="right_mid">
+                    <style name="bg_transparent"/>
+                    
+                    <lv_label text="#default_speed" align="center" y="-10">
+                        <style name="text_large_white"/>
+                    </lv_label>
+                    
+                    <lv_label text="#speed_unit" align="center" y="50">
+                        <style name="text_small_gray"/>
+                    </lv_label>
+                </lv_obj>
+            </lv_obj>
+            
+            <!-- Progress Bar Indicator -->
+            <lv_bar width="700" height="8" align="top_mid" y="150"/>
+            
+            <!-- Main Content Area: 2 Columns -->
+            <lv_obj width="800" height="280" align="center" y="50">
+                <style name="bg_transparent"/>
+                
+                <!-- Left Column -->
+                <lv_obj width="350" height="280" align="left_mid" x="30">
+                    <style name="bg_transparent"/>
+                    
+                    <!-- Voltage Row -->
+                    <lv_obj width="350" height="80" align="top_left" y="0">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#voltage_label" align="top_left" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#voltage_value" align="bottom_left" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                    
+                    <!-- Fuel Pressure Row -->
+                    <lv_obj width="350" height="80" align="top_left" y="100">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#fuel_pressure_label" align="top_left" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#fuel_pressure_value" align="bottom_left" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                    
+                    <!-- Oil Pressure Row -->
+                    <lv_obj width="350" height="80" align="top_left" y="200">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#oil_pressure_label" align="top_left" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#oil_pressure_value" align="bottom_left" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                </lv_obj>
+                
+                <!-- Right Column -->
+                <lv_obj width="350" height="280" align="right_mid" x="-30">
+                    <style name="bg_transparent"/>
+                    
+                    <!-- Oil Pressure (Top Right) Row -->
+                    <lv_obj width="350" height="60" align="top_right" y="0">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#oil_pressure_top_label" align="top_right" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#oil_pressure_top_value" align="bottom_right" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                    
+                    <!-- Coolant Temp Row -->
+                    <lv_obj width="350" height="60" align="top_right" y="75">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#coolant_temp_label" align="top_right" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#coolant_temp_value" align="bottom_right" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                    
+                    <!-- Oil Temp Row -->
+                    <lv_obj width="350" height="60" align="top_right" y="150">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#oil_temp_label" align="top_right" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#oil_temp_value" align="bottom_right" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                    
+                    <!-- MAP Row -->
+                    <lv_obj width="350" height="60" align="top_right" y="225">
+                        <style name="bg_transparent"/>
+                        
+                        <lv_label text="#map_label" align="top_right" x="0" y="0">
+                            <style name="text_label_white"/>
+                        </lv_label>
+                        
+                        <lv_label text="#map_value" align="bottom_right" x="0" y="0">
+                            <style name="text_value_white"/>
+                        </lv_label>
+                    </lv_obj>
+                </lv_obj>
+            </lv_obj>
+            
+        </lv_obj>
+    </view>
+</screen>
