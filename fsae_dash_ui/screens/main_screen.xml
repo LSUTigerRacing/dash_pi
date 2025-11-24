@@ -36,12 +36,12 @@
         <style name="bg_dark_red" bg_color="#4A0000" bg_opa="100%"/>
         <style name="bg_transparent" bg_opa="0%" border_width="0"/>
         
-        <!-- Text styles -->
-        <style name="text_large_white" text_color="#FFFFFF" text_font="roboto_bold_72"/>
-        <style name="text_medium_white" text_color="#FFFFFF" text_font="roboto_bold_36"/>
-        <style name="text_label_white" text_color="#FFFFFF" text_font="roboto_regular_14"/>
-        <style name="text_value_white" text_color="#FFFFFF" text_font="roboto_bold_24"/>
-        <style name="text_small_gray" text_color="#AAAAAA" text_font="roboto_regular_12"/>
+        <!-- Text styles - all use default font since we can't reference custom fonts here -->
+        <style name="text_large_white" text_color="#FFFFFF"/>
+        <style name="text_medium_white" text_color="#FFFFFF"/>
+        <style name="text_label_white" text_color="#FFFFFF"/>
+        <style name="text_value_white" text_color="#FFFFFF"/>
+        <style name="text_small_gray" text_color="#AAAAAA"/>
     </styles>
     
     <view>
