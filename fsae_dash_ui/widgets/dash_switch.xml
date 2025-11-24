@@ -1,0 +1,53 @@
+<component>
+    <previews>
+        <preview style_pad_all="4"/>
+    </previews>
+    
+    <api>
+        <prop name="label" type="string" default="SWITCH" help="Label text next to switch"/>
+        <prop name="checked" type="int" default="0" help="Initial state: 0=off, 1=on"/>
+    </api>
+    
+    <styles>
+        <!-- Container style -->
+        <style name="container_style"
+               bg_opa="0%"
+               border_width="0"
+               pad_all="#unit_sm"/>
+        
+        <!-- Switch background (OFF state) -->
+        <style name="switch_bg_off"
+               bg_color="#text_muted"
+               bg_opa="100%"
+               border_width="0"/>
+        
+        <!-- Switch background (ON state) -->
+        <style name="switch_bg_on"
+               bg_color="#status_ok"/>
+        
+        <!-- Switch indicator (the moving knob) -->
+        <style name="switch_indicator"
+               bg_color="#text_primary"/>
+        
+        <!-- Label style -->
+        <style name="label_style"
+               text_color="#text_primary"/>
+    </styles>
+    
+    <view extends="lv_obj">
+        <remove_style_all/>
+        <style name="container_style"/>
+        
+        <!-- Switch widget -->
+        <lv_switch align="left_mid" x="0">
+            <style name="switch_bg_off"/>
+            <style name="switch_bg_on" selector="checked"/>
+            <style name="switch_indicator" part="indicator"/>
+        </lv_switch>
+        
+        <!-- Label -->
+        <lv_label text="$label" align="left_mid" x="60">
+            <style name="label_style"/>
+        </lv_label>
+    </view>
+</component>

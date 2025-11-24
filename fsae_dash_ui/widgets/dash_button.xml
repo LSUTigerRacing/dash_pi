@@ -1,0 +1,44 @@
+<component>
+    <previews>
+        <preview style_pad_all="4"/>
+    </previews>
+    
+    <api>
+        <prop name="label" type="string" default="BUTTON" help="Button text label"/>
+        <prop name="width" type="int" default="150" help="Button width in pixels"/>
+        <prop name="height" type="int" default="50" help="Button height in pixels"/>
+    </api>
+    
+    <styles>
+        <!-- Normal state -->
+        <style name="btn_normal"
+               bg_color="#bg_secondary"
+               bg_opa="100%"
+               border_width="2"
+               border_color="#border_primary"
+               radius="8"
+               text_color="#text_primary"
+               pad_hor="#unit_lg"
+               pad_ver="#unit_md"/>
+        
+        <!-- Pressed state -->
+        <style name="btn_pressed"
+               bg_color="#bg_container"
+               border_color="#purple"
+               text_color="#gold"/>
+        
+        <!-- Disabled state -->
+        <style name="btn_disabled"
+               bg_opa="#opa_half"
+               text_color="#text_muted"/>
+    </styles>
+    
+    <view extends="lv_button">
+        <remove_style_all/>
+        <style name="btn_normal"/>
+        <style name="btn_pressed" selector="pressed"/>
+        <style name="btn_disabled" selector="disabled"/>
+        
+        <lv_label text="$label" align="center"/>
+    </view>
+</component>
