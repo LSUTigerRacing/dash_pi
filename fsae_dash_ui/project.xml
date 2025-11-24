@@ -1,9 +1,21 @@
 <project>
-  <assets>
-    <font path="fonts/Arimo-Bold.ttf" name="ArimoBold"/>
-  </assets>
+    <folders>
+        <!-- Local component and widget references -->
+        <folder path="components"/>
+        <folder path="widgets"/>
+    </folders>
 
-  <screens>
-    <screen path="screens/screens.xml"/>
-  </screens>
+    <targets>
+        <!-- Target hardware configuration for dash -->
+        <target name="fsae_dash">
+            <!-- 800x480 7-inch display with 16-bit color -->
+            <display width="800" height="480" color_format="xrgb8888"/>
+            <!-- ESP32-specific internal memory values -->
+            <memory name="int_ram" size="520K"/>
+            <memory name="int_flash" size="4M"/>
+            <!-- No external memory -->
+            <memory name="ext_ram" size="0"/>
+            <memory name="ext_flash" size="0M"/>
+        </target>
+    </targets>
 </project>
