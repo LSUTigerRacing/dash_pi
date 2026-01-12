@@ -33,15 +33,15 @@
     
     <styles>
         <!-- Background styles -->
-        <style name="bg_dark_red" bg_color="#4A0000" bg_opa="100%"/>
+        <style name="bg_dark_red" bg_color="0x4A0000" bg_opa="100%"/>
         <style name="bg_transparent" bg_opa="0%" border_width="0"/>
         
         <!-- Text styles - all use default font since we can't reference custom fonts here -->
-        <style name="text_large_white" text_color="#FFFFFF"/>
-        <style name="text_medium_white" text_color="#FFFFFF"/>
-        <style name="text_label_white" text_color="#FFFFFF"/>
-        <style name="text_value_white" text_color="#FFFFFF"/>
-        <style name="text_small_gray" text_color="#AAAAAA"/>
+        <style name="text_large_white" text_color="0xFFFFFF"/>
+        <style name="text_medium_white" text_color="0xFFFFFF"/>
+        <style name="text_label_white" text_color="0xFFFFFF"/>
+        <style name="text_value_white" text_color="0xFFFFFF"/>
+        <style name="text_small_gray" text_color="0xAAAAAA"/>
     </styles>
     
     <view>
