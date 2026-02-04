@@ -1357,9 +1357,9 @@
 #endif
 
 /** Use OpenGL to open window on PC and handle mouse and keyboard */
-#define LV_USE_OPENGLES   1
+#define LV_USE_OPENGLES   0
 #if LV_USE_OPENGLES
-    #define LV_USE_OPENGLES_DEBUG        1    /**< Enable or disable debug for opengles */
+    #define LV_USE_OPENGLES_DEBUG        0   /**< Enable or disable debug for opengles */
 #endif
 
 /** QNX Screen display and input drivers */
