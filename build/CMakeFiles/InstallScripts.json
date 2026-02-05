@@ -1,0 +1,10 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/thava/dash_pi/build/cmake_install.cmake",
+		"/home/thava/dash_pi/build/lvgl/cmake_install.cmake",
+		"/home/thava/dash_pi/build/src/cmake_install.cmake",
+		"/home/thava/dash_pi/build/src/Protocol/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
