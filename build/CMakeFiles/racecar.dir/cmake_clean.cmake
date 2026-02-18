@@ -1,7 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/racecar.dir/link.d"
-  "CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o"
-  "CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o.d"
   "CMakeFiles/racecar.dir/src/main.cpp.o"
   "CMakeFiles/racecar.dir/src/main.cpp.o.d"
   "racecar"

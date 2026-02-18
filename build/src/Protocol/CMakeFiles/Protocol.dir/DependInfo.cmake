@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/thava/dash_pi/src/Protocol/SPI.cpp" "src/Protocol/CMakeFiles/Protocol.dir/SPI.cpp.o" "gcc" "src/Protocol/CMakeFiles/Protocol.dir/SPI.cpp.o.d"
+  "/home/dash/Documents/dash_pi/src/Protocol/SPI.cpp" "src/Protocol/CMakeFiles/Protocol.dir/SPI.cpp.o" "gcc" "src/Protocol/CMakeFiles/Protocol.dir/SPI.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

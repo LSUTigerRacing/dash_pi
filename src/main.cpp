@@ -11,7 +11,7 @@
 #include "../lvgl/src/display/lv_display.h"
 #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
 #include "../lvgl/src/stdlib/lv_mem.h"
-#include "uart.hpp"
+#include "Protocol/uart.hpp"
 
 #define HOR 240
 #define VER 320
