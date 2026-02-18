@@ -691,4 +691,6 @@ src/CMakeFiles/src.dir/main.cpp.o: /home/thava/dash_pi/src/main.cpp \
  /home/thava/dash_pi/src/../lvgl/src/stdlib/lv_mem.h \
  /home/thava/dash_pi/src/Protocol/uart.hpp /usr/include/c++/13/mutex \
  /usr/include/c++/13/bits/std_mutex.h \
- /usr/include/c++/13/bits/unique_lock.h
+ /usr/include/c++/13/bits/unique_lock.h \
+ /home/thava/dash_pi/src/Protocol/lvglScreen.hpp \
+ /home/thava/dash_pi/lvgl/lvgl.h

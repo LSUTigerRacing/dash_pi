@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/thava/dash_pi/src/Protocol/lvglScreen.cpp" "CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.o" "gcc" "CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.o.d"
   "/home/thava/dash_pi/src/Protocol/uart.cpp" "CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o" "gcc" "CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o.d"
   "/home/thava/dash_pi/src/main.cpp" "CMakeFiles/racecar.dir/src/main.cpp.o" "gcc" "CMakeFiles/racecar.dir/src/main.cpp.o.d"
   "" "racecar" "gcc" "CMakeFiles/racecar.dir/link.d"

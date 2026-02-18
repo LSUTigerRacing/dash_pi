@@ -4,6 +4,7 @@ racecar: \
   /usr/lib/gcc/x86_64-linux-gnu/13/crtbeginS.o \
   CMakeFiles/racecar.dir/src/main.cpp.o \
   CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o \
+  CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.o \
   lvgl/lib/liblvgl.a \
   src/Protocol/libProtocol.a \
   lvgl/lib/liblvgl_thorvg.a \
@@ -51,6 +52,8 @@ racecar: \
 CMakeFiles/racecar.dir/src/main.cpp.o:
 
 CMakeFiles/racecar.dir/src/Protocol/uart.cpp.o:
+
+CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.o:
 
 lvgl/lib/liblvgl.a:
 

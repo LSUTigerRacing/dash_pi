@@ -610,10 +610,10 @@
  * https://fonts.google.com/specimen/Montserrat */
 #define LV_FONT_MONTSERRAT_8  0
 #define LV_FONT_MONTSERRAT_10 0
-#define LV_FONT_MONTSERRAT_12 0
+#define LV_FONT_MONTSERRAT_12 1
 #define LV_FONT_MONTSERRAT_14 1
-#define LV_FONT_MONTSERRAT_16 0
-#define LV_FONT_MONTSERRAT_18 0
+#define LV_FONT_MONTSERRAT_16 1
+#define LV_FONT_MONTSERRAT_18 1
 #define LV_FONT_MONTSERRAT_20 0
 #define LV_FONT_MONTSERRAT_22 0
 #define LV_FONT_MONTSERRAT_24 0
@@ -1238,7 +1238,7 @@
 #endif
 
 /** Driver for /dev/fb */
-#define LV_USE_LINUX_FBDEV      0
+#define LV_USE_LINUX_FBDEV      1
 #if LV_USE_LINUX_FBDEV
     #define LV_LINUX_FBDEV_BSD           0
     #define LV_LINUX_FBDEV_RENDER_MODE   LV_DISPLAY_RENDER_MODE_PARTIAL
@@ -1304,7 +1304,7 @@
 #define LV_USE_TFT_ESPI         0
 
 /** Driver for evdev input devices */
-#define LV_USE_EVDEV    0
+#define LV_USE_EVDEV    1
 
 /** Driver for libinput input devices */
 #define LV_USE_LIBINPUT    0

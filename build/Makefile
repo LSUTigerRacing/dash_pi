@@ -252,6 +252,30 @@ Protocol/fast:
 	$(MAKE) $(MAKESILENT) -f src/Protocol/CMakeFiles/Protocol.dir/build.make src/Protocol/CMakeFiles/Protocol.dir/build
 .PHONY : Protocol/fast
 
+src/Protocol/lvglScreen.o: src/Protocol/lvglScreen.cpp.o
+.PHONY : src/Protocol/lvglScreen.o
+
+# target to build an object file
+src/Protocol/lvglScreen.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/racecar.dir/build.make CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.o
+.PHONY : src/Protocol/lvglScreen.cpp.o
+
+src/Protocol/lvglScreen.i: src/Protocol/lvglScreen.cpp.i
+.PHONY : src/Protocol/lvglScreen.i
+
+# target to preprocess a source file
+src/Protocol/lvglScreen.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/racecar.dir/build.make CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.i
+.PHONY : src/Protocol/lvglScreen.cpp.i
+
+src/Protocol/lvglScreen.s: src/Protocol/lvglScreen.cpp.s
+.PHONY : src/Protocol/lvglScreen.s
+
+# target to generate assembly for a file
+src/Protocol/lvglScreen.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/racecar.dir/build.make CMakeFiles/racecar.dir/src/Protocol/lvglScreen.cpp.s
+.PHONY : src/Protocol/lvglScreen.cpp.s
+
 src/Protocol/uart.o: src/Protocol/uart.cpp.o
 .PHONY : src/Protocol/uart.o
 
@@ -319,6 +343,9 @@ help:
 	@echo "... lvgl_thorvg"
 	@echo "... racecar"
 	@echo "... src"
+	@echo "... src/Protocol/lvglScreen.o"
+	@echo "... src/Protocol/lvglScreen.i"
+	@echo "... src/Protocol/lvglScreen.s"
 	@echo "... src/Protocol/uart.o"
 	@echo "... src/Protocol/uart.i"
 	@echo "... src/Protocol/uart.s"

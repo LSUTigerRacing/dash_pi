@@ -7,7 +7,10 @@ set(CONFIG_LV_BUILD_DEMOS ON)
 include_directories(${CMAKE_SOURCE_DIR})
 add_subdirectory(lvgl)
 add_subdirectory(src)
-add_executable (racecar src/main.cpp)
+add_executable (
+    racecar src/main.cpp 
+    src/Protocol/uart.cpp
+    src/Protocol/lvglScreen.cpp )
 
 target_link_libraries(racecar PRIVATE lvgl   Protocol)
 message("exit")

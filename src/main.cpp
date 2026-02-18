@@ -11,7 +11,8 @@
 #include "../lvgl/src/display/lv_display.h"
 #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
 #include "../lvgl/src/stdlib/lv_mem.h"
-#include "uart.hpp"
+#include "Protocol/uart.hpp"
+#include "Protocol/lvglScreen.hpp"
 
 #define HOR 240
 #define VER 320
@@ -82,6 +83,12 @@ int main(int argvc, char ** argv){
     
     lv_display_set_buffers(ili9341disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
 
+    lv_obj_t *screen = main_create();
+    lv_scr_load(screen);
+    
+
+    //potentailly massive waste
+
     lv_obj_t *brake_label =lv_label_create(lv_screen_active());
     lv_obj_set_pos(brake_label,10,10);
     lv_label_set_text(brake_label, "Brake: --");
@@ -109,6 +116,8 @@ int main(int argvc, char ** argv){
     lv_obj_t *fault_label = lv_label_create(lv_screen_active());
     lv_obj_set_pos(fault_label, 10, 130);
     lv_label_set_text(fault_label, "Fault: --");
+    
+    
     while(1){
         uart_update();
 
@@ -153,5 +162,12 @@ int main(int argvc, char ** argv){
         }
         lv_display_flush_ready(ili9341disp);
     }
+    // input drivers
+    lv_display_t *disp = lv_linux_fbdev_create();
+    lv_linux_fbdev_set_file(disp, "/dev/fb0");
+
+    lv_indev_t *touch = lv_evdev_create(LV_INDEV_TYPE_POINTER, "/dev/input/event0");
+    lv_indev_set_display(touch, disp);
+
     uart_cleanup();
 }
