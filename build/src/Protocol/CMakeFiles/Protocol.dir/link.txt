@@ -1,2 +1,0 @@
-/usr/bin/ar qc libProtocol.a CMakeFiles/Protocol.dir/SPI.cpp.o
-/usr/bin/ranlib libProtocol.a

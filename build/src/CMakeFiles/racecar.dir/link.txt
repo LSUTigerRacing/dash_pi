@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/racecar.dir/link.d CMakeFiles/racecar.dir/main.cpp.o -o racecar  Protocol/libSPI.a Protocol/libUART.a
