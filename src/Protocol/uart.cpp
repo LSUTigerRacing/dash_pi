@@ -1,4 +1,4 @@
-#include <uart.hpp>
+#include "uart.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +11,7 @@
 #include <mutex>
 
 #define SERIAL_PORT_PATH "/dev/ttyS0"
+
 static struct termios g_tty; // for storing serial port settings
 static int g_fd = -1;        // file descriptor
 static UARTData g_uart_data = {0};
@@ -104,7 +105,7 @@ static void parse_uart_data(uint8_t *buffer, int length, UARTData *data)
 {
 
     if (length < 2)
-        return; 
+        return;
 
     uint8_t msg_type = buffer[0];
 
@@ -113,7 +114,7 @@ static void parse_uart_data(uint8_t *buffer, int length, UARTData *data)
     case 0x01:
         if (length >= 5)
         {
-            //temp for brake
+            // temp for brake
             uint16_t front_temp = (buffer[1] << 8) | buffer[2];
             uint16_t rear_temp = (buffer[3] << 8) | buffer[4];
             data->brake_temperature = front_temp;
@@ -124,7 +125,7 @@ static void parse_uart_data(uint8_t *buffer, int length, UARTData *data)
     case 0x02: // Coolant temperature data
         if (length >= 3)
         {
-            
+
             data->coolant_temperature = (buffer[1] << 8) | buffer[2];
             printf("Coolant Temp: %u\n", data->coolant_temperature);
         }
@@ -140,12 +141,15 @@ static void parse_uart_data(uint8_t *buffer, int length, UARTData *data)
             data->motor_status = buffer[9];
 
             printf("Motor - V:%u, I:%u, RPM:%u, Temp:%u, Status:0x%02X\n",
-                   data->motor_voltage, data->motor_current, data->motor_rpm,
-                   data->motor_temperature, data->motor_status);
+                   data->motor_voltage,
+                   data->motor_current,
+                   data->motor_rpm,
+                   data->motor_temperature,
+                   data->motor_status);
         }
         break;
 
-    case 0x04: //can
+    case 0x04: // can
         if (length >= 11)
         {
             data->can_id_1 = (buffer[1] << 8) | buffer[2];
@@ -163,7 +167,7 @@ static void parse_uart_data(uint8_t *buffer, int length, UARTData *data)
     case 0x0F: // Fault data
         if (length >= 3)
         {
-            // Fault code 
+            // Fault code
             data->fault_code = buffer[1];
             // Fault severity: 0=None, 1=Warning, 2=Critical
             data->fault_severity = buffer[2];
@@ -212,7 +216,7 @@ void uart_update()
     }
 }
 
-// Get current UART data 
+// Get current UART data
 UARTData uart_get_data()
 {
     std::lock_guard<std::mutex> lock(g_data_mutex);
@@ -224,7 +228,7 @@ bool uart_has_new_data()
 {
     std::lock_guard<std::mutex> lock(g_data_mutex);
     bool ready = g_uart_data.data_ready;
-    g_uart_data.data_ready = false; 
+    g_uart_data.data_ready = false;
     return ready;
 }
 
