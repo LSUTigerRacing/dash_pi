@@ -10,7 +10,6 @@ add_subdirectory(src)
 add_executable(
     racecar
     src/main.cpp
-    src/Protocol/uart.cpp
 )
 
 target_link_libraries(racecar PRIVATE lvgl Protocol ui)

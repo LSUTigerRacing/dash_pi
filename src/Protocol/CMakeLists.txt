@@ -1,3 +1,3 @@
-add_library(Protocol SPI.cpp)
+add_library(Protocol SPI.cpp uart.cpp)
 
 target_include_directories(Protocol SYSTEM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
