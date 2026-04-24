@@ -24,14 +24,14 @@ enum TableRow : uint32_t {
     ROW_PACK_CURRENT,
     ROW_COUNT
 };
-
+//values for data
 void set_value(uint32_t row, uint16_t value)
 {
     char buffer[16];
     lv_snprintf(buffer, sizeof(buffer), "%u", value);
     lv_table_set_cell_value(table, row, 1, buffer);
 }
-
+//values for data but it has decimals
 void set_decimal_value(uint32_t row, uint16_t value)
 {
     char buffer[16];
@@ -41,7 +41,7 @@ void set_decimal_value(uint32_t row, uint16_t value)
 }
 
 void ui_init()
-{
+{   //screen root
     lv_obj_t *screen = lv_obj_create(NULL);
     lv_obj_clear_flag(screen, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_color(screen, lv_color_hex(0x000000), 0);
@@ -51,10 +51,10 @@ void ui_init()
     lv_obj_set_size(table, 320, 240);
     lv_obj_set_pos(table, 0, 0);
     lv_obj_clear_flag(table, LV_OBJ_FLAG_SCROLLABLE);
-
+    //making table
     lv_table_set_col_width(table, 0, 200);
     lv_table_set_col_width(table, 1, 120);
-
+    //style
     lv_obj_set_style_bg_color(table, lv_color_hex(0x000000), 0);
     lv_obj_set_style_border_width(table, 0, 0);
     lv_obj_set_style_pad_all(table, 0, 0);
@@ -63,7 +63,7 @@ void ui_init()
     lv_obj_set_style_text_font(table, &lv_font_montserrat_18, LV_PART_ITEMS);
     lv_obj_set_style_text_color(table, lv_color_hex(0xEEEEEE), LV_PART_ITEMS);
     lv_obj_set_style_bg_opa(table, LV_OPA_TRANSP, LV_PART_ITEMS);
-
+    //placing name on the left side of the table
     lv_table_set_cell_value(table, ROW_MC_TEMP, 0, "MC Temp");
     lv_table_set_cell_value(table, ROW_MOTOR_TEMP, 0, "Motor Temp");
     lv_table_set_cell_value(table, ROW_MC_INPUT_V, 0, "MC Input V");
@@ -80,6 +80,7 @@ void ui_init()
     lv_table_set_cell_value(table, ROW_PACK_VOLT, 0, "Pack Volt");
     lv_table_set_cell_value(table, ROW_PACK_CURRENT, 0, "Pack Current");
 
+    //set all value to zero until actual data aarrive
     for(uint32_t row = 0; row < ROW_COUNT; row++) {
         lv_table_set_cell_value(table, row, 1, "0");
     }
