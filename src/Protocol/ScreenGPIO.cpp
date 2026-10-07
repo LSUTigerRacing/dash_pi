@@ -1,3 +1,5 @@
+//Modified by Anthony Meiers, definitions from ScreenGPIO.hpp are redefined below, causing compilation errors.
+//Also changed additional lines to fix mistakes in the code that were causing additional compilation errors.
 #include "ScreenGPIO.hpp"
 #include <chrono>
 #include <thread>
@@ -32,29 +34,29 @@ static uint8_t initcmd[] = {
   0x00                                   // End of list
 };
 
-class ScreenGPIO{
-    private:
-        gpiod::chip chipName;
-        gpiod::line_request rstPin;
-        gpiod::line_request dataPin;
+//class ScreenGPIO{ //Anthony Meiers - commented out lines are redefinitions from ScreenGPIO.hpp.
+//    private:
+//        gpiod::chip chipName;
+//        gpiod::line_request rstPin;
+//        gpiod::line_request dataPin;
 
-        uint8_t rst_offset;
-        uint8_t data_offset;
+//        uint8_t rst_offset;
+//        uint8_t data_offset;
 
-        SPIDevice display;
+//        SPIDevice display;
 
-    public:
+//    public:
         ScreenGPIO::ScreenGPIO(uint8_t rst_offset, uint8_t data_offset):rst_offset(rst_offset), data_offset(data_offset),chipName("/dev/gpiochip0"),
         rstPin(chipName.prepare_request().set_consumer("screen").add_line_settings(rst_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
         dataPin(chipName.prepare_request().set_consumer("screen").add_line_settings(data_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
-        display("/dev/spidev0.0",1000000,0,8,true,false)
+        display("/dev/spidev0.1",1000000,0,8,true,false) // Anthony Meiers - changed "spidev0.0" to "spidev0.1" to fix a compilation error.
         {
           Reset_Screen();
           Send_Data(initcmd,111);
         }
 
         ScreenGPIO::~ScreenGPIO(){
-          display.~SPIDevice();
+        //  display.~SPIDevice(); //Anthony Meiers - Unnecessary destructor call, could cause errors as C++ automatically destroys objects this would destroy.
         }
 
         //Resetting the screen just requires turning the pin off briefly and turning it back on
@@ -70,7 +72,7 @@ class ScreenGPIO{
           return display.SPI_Write(reinterpret_cast<uint8_t*> (cmd),1);  
         }
 
-        int Send_Data(const uint8_t* data, size_t len){
+        int ScreenGPIO::Send_Data(const uint8_t* data, size_t len){ //Anthony Meiers - declaration missing "ScreenGPIO::", causing errors when compiling.
           dataPin.set_value(data_offset,gpiod::line::value::ACTIVE); //Data pin high means sending data
           return display.SPI_Write(data,len);
         }

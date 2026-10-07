@@ -1,3 +1,5 @@
+//Modified by Anthony Meiers - definitions from SPI.hpp is redefined below, causing compilation errors. 
+//Also method "Get_CLK();" was never added to this file, causing additional errors on compilation.
 #include "SPI.hpp"
 #include <linux/spi/spidev.h>
 #include <fcntl.h>
@@ -7,15 +9,17 @@
 #include <linux/types.h>
 #include <system_error>
 
-class SPIDevice{
-    private: 
-        int file_descriptor;
-        std::string file_path;
-        uint32_t clk_Speed;
-        uint8_t bits;
+//class SPIDevice{ //Anthony Meiers - commented out lines are redefinitions from SPI.hpp.
+//    private: 
+//        int file_descriptor;
+//        std::string file_path;
+//        uint32_t clk_Speed;
+//        uint8_t bits;
+//
+//    public:
 
-    public:
-        SPIDevice(const std::string file_path, const uint32_t clk_Speed, const uint8_t mode, const uint8_t bits,bool read, bool write): 
+//Anthony Meiers - "SPIDevice::" links this constructor to the SPI.hpp file
+        SPIDevice::SPIDevice(const std::string file_path, const uint32_t clk_Speed, const uint8_t mode, const uint8_t bits,bool read, bool write): 
         file_path(file_path),file_descriptor(-1), clk_Speed(clk_Speed),bits(bits) {
             //file path should be /dev/spidevB.C B is the bus while C is the chip select for that device
             //when opening it gives access to reading and writing permissions to that file
@@ -47,6 +51,10 @@ class SPIDevice{
             return file_descriptor;
         }
 
+        //Anthony Meiers - Added Get_Clk() method that was defined in SPI.hpp but not implemented in SPI.cpp, causing compilation errors. v
+        uint32_t SPIDevice::Get_Clk() {
+            return clk_Speed;
+        }
     //ioctl wrapper for spi reading you cannot use the normal read() function becasue in SPI you need to send dummy data to be able to read data
     // this is because since the master calls when to read it sends a serial clock pulse to notify the device to send the data
     /*
@@ -94,5 +102,3 @@ class SPIDevice{
 
             return ret;
         }
-
-};

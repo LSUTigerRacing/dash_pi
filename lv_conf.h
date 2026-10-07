@@ -1,3 +1,4 @@
+//File Modified by Anthony Meiers, program crashes from not enough memory at ln77, increased from 64 -> 256.
 /**
  * @file lv_conf.h
  * Configuration file for v9.4.0-dev
@@ -69,9 +70,10 @@
 #define LV_LIMITS_INCLUDE       <limits.h>
 #define LV_STDARG_INCLUDE       <stdarg.h>
 
-#if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN
+//Anthony Meiers - Program Crashed from not enough memory here, increased from 64 -> 256. v
+#if LV_USE_STDLIB_MALLOC == LV_STDLIB_BUILTIN 
     /** Size of memory available for `lv_malloc()` in bytes (>= 2kB) */
-    #define LV_MEM_SIZE (64 * 1024U)          /**< [bytes] */
+    #define LV_MEM_SIZE (256 * 1024U)          /**< [bytes] */ 
 
     /** Size of the memory expand for `lv_malloc()` in bytes */
     #define LV_MEM_POOL_EXPAND_SIZE 0
