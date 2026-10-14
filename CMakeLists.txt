@@ -1,32 +1,31 @@
-
 cmake_minimum_required(VERSION 3.12.4)
 
 project(dash)
 
-# Disable unnecessary LVGL demos and examples
-set(CONFIG_LV_BUILD_DEMOS OFF CACHE BOOL "" FORCE)
-set(CONFIG_LV_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(CONFIG_LV_BUILD_DEMOS ON)
+
+# default option is protocol mode
+option(DESKTOP_MODE "Enable desktop emulator" OFF)
 
 include_directories(${CMAKE_SOURCE_DIR})
 
-# LVGL graphics library
 add_subdirectory(lvgl)
+add_subdirectory(src)
 
-# Only build the dashboard UI, not Raspberry Pi hardware
-add_subdirectory(src/ui)
-
-# Desktop executable
 add_executable(
     racecar
     src/main.cpp
 )
 
-# SDL2 window support
-find_package(SDL2 REQUIRED)
+if(DESKTOP_MODE)
+  find_package(SDL2 REQUIRED)
+  target_compile_definitions(racecar PRIVATE DESKTOP_MODE)
+  target_compile_definitions(lvgl PUBLIC DESKTOP_MODE)
+  target_link_libraries(racecar PRIVATE SDL2::SDL2)
+else()
+  target_link_libraries(racecar PRIVATE Protocol ui)
+endif()
 
-target_link_libraries(racecar PRIVATE
-    lvgl
-    ui
-    SDL2::SDL2
-)
+target_link_libraries(racecar PRIVATE lvgl ui)
 
+message("exit")

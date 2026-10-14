@@ -1,4 +1,3 @@
-
 #include "Protocol/SPI.hpp"
 #include <fcntl.h>
 #include <unistd.h>
@@ -10,22 +9,28 @@
 #include "../lv_conf.h"
 
 // Raspberry Pi LCD driver
-// #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
-// #include "../lvgl/src/stdlib/lv_mem.h"
-// #include "ScreenGPIO.hpp"
-// #include "Protocol/uart.hpp"
+#ifndef DESKTOP_MODE
+  #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
+  #include "../lvgl/src/stdlib/lv_mem.h"
+  #include "ScreenGPIO.hpp"
+  #include "Protocol/uart.hpp"
+#endif 
 
 #include "ui/ui.hpp"
 
 // SDL desktop display
-#include "../lvgl/src/drivers/sdl/lv_sdl_window.h"
-#include "../lvgl/src/drivers/sdl/lv_sdl_mouse.h"
+#ifdef DESKTOP_MODE
+  #include "../lvgl/src/drivers/sdl/lv_sdl_window.h"
+  #include "../lvgl/src/drivers/sdl/lv_sdl_mouse.h"
+#endif
 
 #define HOR 240
 #define VER 320
 #define LCD_BUF_LINES 180
 
-// static ScreenGPIO display (16,18); //put actual pin numbers for reset and data pins
+#ifndef DESKTOP_MODE
+static ScreenGPIO display (16,18); //put actual pin numbers for reset and data pins
+#endif 
 
 /**
  * @brief Callback for lvgl to send how many milliseconds has occurred
@@ -45,6 +50,8 @@ static uint32_t get_millisec(){
  * Original functions preserved below.
  */
 
+#ifndef DESKTOP_MODE
+
 /**
  * @brief Callback used by lvgl to send commands to the screen
  *
@@ -54,7 +61,7 @@ static uint32_t get_millisec(){
  * @param param pointer to parameters to command
  * @param param_size size of the parameter
  */
-#if 0
+
 static void cmdCallBack(lv_display_t *disp, const uint8_t *cmd, size_t cmd_size, const uint8_t *param, size_t param_size){
     display.Send_CMD(*cmd);
 
@@ -81,6 +88,7 @@ static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, u
     }
 }
 
+
 /**
  * @brief Custom flush call back that is currently not needed but might be needed later
  *
@@ -88,6 +96,7 @@ static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, u
  * @param area area of the screen
  * @param px_map pixel map of the display
  */
+
 void my_flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map){
     // 1. Tell the display which rectangle of pixels we're about to send
     display.Send_CMD(0x2A); // Column Address Set (CASET)
@@ -115,14 +124,18 @@ void my_flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map){
 
     lv_display_flush_ready(disp);
 }
-#endif
+
+#endif 
 
 int main(int argvc, char **argv)
 {
     lv_init();
 
-    // uart_init();
+    #ifndef DESKTOP_MODE
+    uart_init();
+    #endif
 
+    #ifdef DESKTOP_MODE
     // SDL desktop window
     lv_display_t* display =
         lv_sdl_window_create(320, 240);
@@ -134,11 +147,12 @@ int main(int argvc, char **argv)
     }
 
     lv_sdl_mouse_create();
+    #endif
 
     lv_tick_set_cb(get_millisec);
 
     // Raspberry Pi physical LCD initialization
-    /*
+    #ifndef DESKTOP_MODE
     lv_display_t *ili9341disp = lv_ili9341_create(HOR, VER, LV_LCD_FLAG_NONE, cmdCallBack, color_cb);
     lv_display_set_rotation(ili9341disp, LV_DISPLAY_ROTATION_90); // Makes the screen display horizontal
 
@@ -156,14 +170,14 @@ int main(int argvc, char **argv)
     }
 
     lv_display_set_buffers(ili9341disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
-    */
+    #endif
 
     ui_init();
 
     while (1)
     {
         // UART disabled for desktop testing
-        /*
+        #ifndef DESKTOP_MODE
         uart_update();
 
         if (uart_has_new_data())
@@ -171,7 +185,7 @@ int main(int argvc, char **argv)
             UARTData data = uart_get_data();
             ui_update(data);
         }
-        */
+        #endif
 
         uint32_t timer = lv_timer_handler();
 
@@ -185,5 +199,7 @@ int main(int argvc, char **argv)
         );
     }
 
-    // uart_cleanup();
+    #ifndef DESKTOP_MODE
+    uart_cleanup();
+    #endif
 }
