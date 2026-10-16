@@ -7,87 +7,109 @@
 #include <sys/ioctl.h>
 #include "../lvgl/lvgl.h"
 #include "../lv_conf.h"
-#include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
-#include "../lvgl/src/stdlib/lv_mem.h"
-#include "ScreenGPIO.hpp"
-#include "Protocol/uart.hpp"
+
+// Raspberry Pi LCD driver
+#ifndef DESKTOP_MODE
+  #include "../lvgl/src/drivers/display/ili9341/lv_ili9341.h"
+  #include "../lvgl/src/stdlib/lv_mem.h"
+  #include "ScreenGPIO.hpp"
+  #include "Protocol/uart.hpp"
+#endif 
+
 #include "ui/ui.hpp"
+
+// SDL desktop display
+#ifdef DESKTOP_MODE
+  #include "../lvgl/src/drivers/sdl/lv_sdl_window.h"
+  #include "../lvgl/src/drivers/sdl/lv_sdl_mouse.h"
+#endif
 
 #define HOR 240
 #define VER 320
 #define LCD_BUF_LINES 180
 
+#ifndef DESKTOP_MODE
 static ScreenGPIO display (16,18); //put actual pin numbers for reset and data pins
+#endif 
 
 /**
  * @brief Callback for lvgl to send how many milliseconds has occurred
- * 
+ *
  * @return uint32_t returns how many milliseconds the program has been running for
  */
 static uint32_t get_millisec(){
-  auto clock = std::chrono::high_resolution_clock::now();
+  auto clock = std::chrono::steady_clock::now();
   auto duration = clock.time_since_epoch();
   auto millisec = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-  return (uint32_t) millisec;  
+  return (uint32_t) millisec;
 }
+
+/*
+ * Raspberry Pi hardware callbacks disabled for SDL simulator.
+ *
+ * Original functions preserved below.
+ */
+
+#ifndef DESKTOP_MODE
 
 /**
  * @brief Callback used by lvgl to send commands to the screen
- * 
+ *
  * @param disp Pointer to display
- * @param cmd  pointer to command
+ * @param cmd pointer to command
  * @param cmd_size size of the command
- * @param param pointer to paramters to command
+ * @param param pointer to parameters to command
  * @param param_size size of the parameter
  */
+
 static void cmdCallBack(lv_display_t *disp, const uint8_t *cmd, size_t cmd_size, const uint8_t *param, size_t param_size){
     display.Send_CMD(*cmd);
 
     if(param_size > 0){
-        display.Send_Data(param,param_size);    
+        display.Send_Data(param,param_size);
     }
 }
 
 /**
- *  @brief Callback used by lvgl to send color data to the display
- * 
- *  @param disp Pointer to display
- *  @param cmd Cmd array
- *  @param cmd_size size of cmd array 
- *  @param param array of parameter of color data
- *  @param param_size size of param array
- * 
+ * @brief Callback used by lvgl to send color data to the display
+ *
+ * @param disp Pointer to display
+ * @param cmd Cmd array
+ * @param cmd_size size of cmd array
+ * @param param array of parameter of color data
+ * @param param_size size of param array
  */
 static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, uint8_t * param, size_t param_size){
     for (size_t i = 0; i < cmd_size; ++i) {
         display.Send_CMD(cmd[i]);
     }
     if (param_size > 0) {
-        display.Send_Data(param, param_size);  
+        display.Send_Data(param, param_size);
     }
 }
 
+
 /**
- *  @brief Custom flush call back that is currently not needed but might be needed later
- * 
- *  @param disp pointer to the display object
- *  @param area area of the screen
- *  @param px_map pixel map of the display
- * 
+ * @brief Custom flush call back that is currently not needed but might be needed later
+ *
+ * @param disp pointer to the display object
+ * @param area area of the screen
+ * @param px_map pixel map of the display
  */
+
 void my_flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map){
-   // 1. Tell the display which rectangle of pixels we're about to send
+    // 1. Tell the display which rectangle of pixels we're about to send
     display.Send_CMD(0x2A); // Column Address Set (CASET)
     uint8_t col_data[4] = {
-        static_cast <uint8_t>(area->x1 >> 8), static_cast <uint8_t>(area->x1 & 0xFF),
-        static_cast< uint8_t>(area->x2 >> 8), static_cast <uint8_t>(area->x2 & 0xFF)
+        static_cast<uint8_t>(area->x1 >> 8), static_cast<uint8_t>(area->x1 & 0xFF),
+        static_cast<uint8_t>(area->x2 >> 8), static_cast<uint8_t>(area->x2 & 0xFF)
     };
     display.Send_Data(col_data, 4);
 
     display.Send_CMD(0x2B); // Row Address Set (RASET)
     uint8_t row_data[4] = {
-        static_cast <uint8_t>(area->y1 >> 8), static_cast <uint8_t>(area->y1 & 0xFF),
-        static_cast <uint8_t>(area->y2 >> 8), static_cast <uint8_t>(area->y2 & 0xFF)
+        static_cast<uint8_t>(area->y1 >> 8), static_cast<uint8_t>(area->y1 & 0xFF),
+        static_cast<uint8_t>(area->y2 >> 8), static_cast<uint8_t>(area->y2 & 0xFF)
     };
     display.Send_Data(row_data, 4);
 
@@ -103,21 +125,44 @@ void my_flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map){
     lv_display_flush_ready(disp);
 }
 
+#endif 
+
 int main(int argvc, char **argv)
 {
-
     lv_init();
 
+    #ifndef DESKTOP_MODE
     uart_init();
+    #endif
+
+    #ifdef DESKTOP_MODE
+    // SDL desktop window
+    lv_display_t* display =
+        lv_sdl_window_create(320, 240);
+
+    if (display == nullptr)
+    {
+        std::cerr << "Failed to create SDL display\n";
+        return -1;
+    }
+
+    lv_sdl_mouse_create();
+    #endif
 
     lv_tick_set_cb(get_millisec);
+
+    // Raspberry Pi physical LCD initialization
+    #ifndef DESKTOP_MODE
     lv_display_t *ili9341disp = lv_ili9341_create(HOR, VER, LV_LCD_FLAG_NONE, cmdCallBack, color_cb);
     lv_display_set_rotation(ili9341disp, LV_DISPLAY_ROTATION_90); // Makes the screen display horizontal
+
     uint8_t *buf1 = NULL;
     uint8_t *buf2 = NULL;
     uint32_t buf_size = HOR * LCD_BUF_LINES * lv_color_format_get_size(lv_display_get_color_format(ili9341disp));
+
     buf1 = (uint8_t *)lv_malloc(buf_size);
     buf2 = (uint8_t *)lv_malloc(buf_size); // for double buffering
+
     if (buf1 == NULL)
     {
         LV_LOG_ERROR("display draw buffer malloc failed");
@@ -125,11 +170,14 @@ int main(int argvc, char **argv)
     }
 
     lv_display_set_buffers(ili9341disp, buf1, buf2, buf_size, LV_DISPLAY_RENDER_MODE_PARTIAL);
+    #endif
 
     ui_init();
 
     while (1)
     {
+        // UART disabled for desktop testing
+        #ifndef DESKTOP_MODE
         uart_update();
 
         if (uart_has_new_data())
@@ -137,13 +185,21 @@ int main(int argvc, char **argv)
             UARTData data = uart_get_data();
             ui_update(data);
         }
+        #endif
+
         uint32_t timer = lv_timer_handler();
+
         if (timer == LV_NO_TIMER_READY)
         {
             timer = LV_DEF_REFR_PERIOD;
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
         }
+
+        std::this_thread::sleep_for(
+            std::chrono::milliseconds(5)
+        );
     }
 
+    #ifndef DESKTOP_MODE
     uart_cleanup();
+    #endif
 }
