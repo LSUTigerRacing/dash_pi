@@ -1,4 +1,7 @@
+//File Modified by Anthony Meiers, Reset_Screen() method wasn't properly defined relative to the .cpp file, causing compilation errors.
+//Also added #include "SPI.hpp" to fix additional errors. As well as additional tweaks to the declarations.
 #include <gpiod.hpp> 
+#include "SPI.hpp"
 
 //Copied from adafruit ili9341 library
 #define ILI9341_PWCTR1 0xC0 ///< Power Control 1
@@ -23,13 +26,15 @@ class ScreenGPIO{
         gpiod::line_request rstPin;
         gpiod::line_request dataPin;
 
-        static uint8_t rst_offset;
-        static uint8_t data_offset;
+        //Anthony Meiers - Removed "static" from uint8_t declarations & 
+        uint8_t rst_offset;
+        uint8_t data_offset;
+        SPIDevice display;
 
     public:
         ScreenGPIO(uint8_t rst_offset, uint8_t data_offset);
         ~ScreenGPIO();
-        void Reset_screen();
+        void Reset_Screen(); //Anthony Meiers - Changed casing from "Reset_screen()" to "Reset_Screen()" to match the .cpp file.
         int Send_CMD(char cmd);
         int Send_Data(const uint8_t* data,size_t len);
 
