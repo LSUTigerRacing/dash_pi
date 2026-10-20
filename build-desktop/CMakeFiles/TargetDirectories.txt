@@ -1,0 +1,17 @@
+/home/tobaa/UI/dash_pi/build-desktop/CMakeFiles/racecar.dir
+/home/tobaa/UI/dash_pi/build-desktop/CMakeFiles/edit_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/CMakeFiles/rebuild_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/lvgl.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/lvgl_thorvg.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/lvgl_examples.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/lvgl_demos.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/edit_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/lvgl/CMakeFiles/rebuild_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/CMakeFiles/edit_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/CMakeFiles/rebuild_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/Protocol/CMakeFiles/Protocol.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/Protocol/CMakeFiles/edit_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/Protocol/CMakeFiles/rebuild_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/ui/CMakeFiles/ui.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/ui/CMakeFiles/edit_cache.dir
+/home/tobaa/UI/dash_pi/build-desktop/src/ui/CMakeFiles/rebuild_cache.dir

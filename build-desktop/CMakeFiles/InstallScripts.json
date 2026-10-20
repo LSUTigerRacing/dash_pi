@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/tobaa/UI/dash_pi/build-desktop/cmake_install.cmake",
+		"/home/tobaa/UI/dash_pi/build-desktop/lvgl/cmake_install.cmake",
+		"/home/tobaa/UI/dash_pi/build-desktop/src/cmake_install.cmake",
+		"/home/tobaa/UI/dash_pi/build-desktop/src/Protocol/cmake_install.cmake",
+		"/home/tobaa/UI/dash_pi/build-desktop/src/ui/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
