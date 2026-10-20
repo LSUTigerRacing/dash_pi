@@ -7,15 +7,15 @@
 #include <linux/types.h>
 #include <system_error>
 
-class SPIDevice{
-    private: 
-        int file_descriptor;
-        std::string file_path;
-        uint32_t clk_Speed;
-        uint8_t bits;
+//class_SPIDevice{ i changed ts beacuse it's just bs unnecessary code :fire:
+//     private:
+//        int file_descriptor;
+//        std::string file_path;
+//        uint32_t clk_Speed;
+//        uint8_t bits;
 
-    public:
-        SPIDevice(const std::string file_path, const uint32_t clk_Speed, const uint8_t mode, const uint8_t bits,bool read, bool write): 
+//  public:
+       SPIDevice::SPIDevice(const std::string file_path, const uint32_t clk_Speed, const uint8_t mode, const uint8_t bits,bool read, bool write): 
         file_path(file_path),file_descriptor(-1), clk_Speed(clk_Speed),bits(bits) {
             //file path should be /dev/spidevB.C B is the bus while C is the chip select for that device
             //when opening it gives access to reading and writing permissions to that file
@@ -47,13 +47,18 @@ class SPIDevice{
             return file_descriptor;
         }
 
+	//Anthony Meiers
+	uint32_t SPIDevice:: Get_Clk() {
+		return clk_Speed;
+	}
+
     //ioctl wrapper for spi reading you cannot use the normal read() function becasue in SPI you need to send dummy data to be able to read data
     // this is because since the master calls when to read it sends a serial clock pulse to notify the device to send the data
     /*
-        @brief: ioctl wrapper for SPI 
+        @brief: ioctl wrapper for SPI
         @param: reg
         @param: len length of the data that is going to be read
-        @return: The 
+        @return: The
     */
         int SPIDevice::SPI_Read(uint8_t reg, size_t len){
             //dummy data to send the peripheral device to initiate the data transfer
@@ -70,7 +75,7 @@ class SPIDevice{
             spiTran.delay_usecs = 0;
             spiTran.bits_per_word = 0;
             spiTran.cs_change = false;
-            
+
             //pulls in data and puts it into the rxData vector
             ret = ioctl(file_descriptor,SPI_IOC_MESSAGE(1), &spiTran);
 
@@ -81,18 +86,18 @@ class SPIDevice{
         int SPIDevice::SPI_Write(const uint8_t* data, size_t len){
             std::vector<uint8_t> txData(len);
             int ret;
-            
+
             spi_ioc_transfer spiTran = {};
             spiTran.tx_buf = reinterpret_cast<unsigned long>(data);
             spiTran.len = len;
             spiTran.cs_change = false;
             spiTran.speed_hz = 0;
             spiTran.delay_usecs = 0;
-            spiTran.bits_per_word = 0; 
+            spiTran.bits_per_word = 0;
 
             ret = ioctl(file_descriptor,SPI_IOC_MESSAGE(1), &spiTran);
 
             return ret;
         }
 
-};
+//};

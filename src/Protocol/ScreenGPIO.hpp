@@ -1,4 +1,5 @@
-#include <gpiod.hpp> 
+#include <gpiod.hpp>
+#include "SPI.hpp" //added #include
 
 //Copied from adafruit ili9341 library
 #define ILI9341_PWCTR1 0xC0 ///< Power Control 1
@@ -23,13 +24,15 @@ class ScreenGPIO{
         gpiod::line_request rstPin;
         gpiod::line_request dataPin;
 
-        static uint8_t rst_offset;
-        static uint8_t data_offset;
+	//deleting unnecessary static decs + additional display dec
+        uint8_t rst_offset;
+        uint8_t data_offset;
+	SPIDevice display;
 
     public:
         ScreenGPIO(uint8_t rst_offset, uint8_t data_offset);
         ~ScreenGPIO();
-        void Reset_screen();
+        void Reset_Screen(); //inconsistent command call relative to .cpp, fixed casing
         int Send_CMD(char cmd);
         int Send_Data(const uint8_t* data,size_t len);
 
