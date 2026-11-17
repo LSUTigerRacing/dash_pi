@@ -1,5 +1,3 @@
-//Modified by Anthony Meiers, definitions from ScreenGPIO.hpp are redefined below, causing compilation errors.
-//Also changed additional lines to fix mistakes in the code that were causing additional compilation errors.
 #include "ScreenGPIO.hpp"
 #include <chrono>
 #include <thread>
@@ -34,12 +32,12 @@ static uint8_t initcmd[] = {
   0x00                                   // End of list
 };
 
-//class ScreenGPIO{ //Anthony Meiers - commented out lines are redefinitions from ScreenGPIO.hpp.
+//class_ScreenGPIO{ another unnecessary wrapper :tired:
 //    private:
 //        gpiod::chip chipName;
 //        gpiod::line_request rstPin;
 //        gpiod::line_request dataPin;
-
+//
 //        uint8_t rst_offset;
 //        uint8_t data_offset;
 
@@ -49,14 +47,40 @@ static uint8_t initcmd[] = {
         ScreenGPIO::ScreenGPIO(uint8_t rst_offset, uint8_t data_offset):rst_offset(rst_offset), data_offset(data_offset),chipName("/dev/gpiochip0"),
         rstPin(chipName.prepare_request().set_consumer("screen").add_line_settings(rst_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
         dataPin(chipName.prepare_request().set_consumer("screen").add_line_settings(data_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
-        display("/dev/spidev0.1",1000000,0,8,true,false) // Anthony Meiers - changed "spidev0.0" to "spidev0.1" to fix a compilation error.
+        display("/dev/spidev0.1",1000000,0,8,true,false) //changed from spidev0.0 -> 0.1
         {
           Reset_Screen();
-          Send_Data(initcmd,111);
-        }
+          std::this_thread::sleep_for(std::chrono::milliseconds(150));
+          size_t index = 0;
+          
+          while(index < sizeof(initcmd)) {
+            const uint8_t command = initcmd[index++];
+            
+            if (command == 0x00)
+              break;
+            
+            const uint8_t countAndDelay = initcmd[index++];
+            const size_t parameterCount = countAndDelay & 0x7F;
+            
+            Send_CMD(command);
+            
+            if (parameterCount > 0) 
+            {
+              Send_Data(&initcmd[index], parameterCount);
+              index += parameterCount;
+            }
+            
+            if (countAndDelay & 0x80)
+            {
+              std::this_thread::sleep_for(
+              std::chrono::milliseconds(150));
+            }
+            
+          }
+        };
 
         ScreenGPIO::~ScreenGPIO(){
-        //  display.~SPIDevice(); //Anthony Meiers - Unnecessary destructor call, could cause errors as C++ automatically destroys objects this would destroy.
+        //  display.~SPIDevice(); unneccasary line
         }
 
         //Resetting the screen just requires turning the pin off briefly and turning it back on
@@ -69,11 +93,11 @@ static uint8_t initcmd[] = {
 
         int ScreenGPIO::Send_CMD(char cmd){
           dataPin.set_value(data_offset,gpiod::line::value::INACTIVE);//Data pin low means sending commands
-          return display.SPI_Write(reinterpret_cast<uint8_t*> (cmd),1);  
+          return display.SPI_Write(reinterpret_cast<uint8_t*> (&cmd),1);
         }
 
-        int ScreenGPIO::Send_Data(const uint8_t* data, size_t len){ //Anthony Meiers - declaration missing "ScreenGPIO::", causing errors when compiling.
+        int ScreenGPIO::Send_Data(const uint8_t* data, size_t len){ //missing class wrapper
           dataPin.set_value(data_offset,gpiod::line::value::ACTIVE); //Data pin high means sending data
           return display.SPI_Write(data,len);
         }
-};
+//};
