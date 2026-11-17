@@ -33,6 +33,7 @@ static uint8_t initcmd[] = {
 };
 
 //class_ScreenGPIO{ another unnecessary wrapper :tired:
+//class_ScreenGPIO{ another unnecessary wrapper :tired:
 //    private:
 //        gpiod::chip chipName;
 //        gpiod::line_request rstPin;
@@ -47,7 +48,7 @@ static uint8_t initcmd[] = {
         ScreenGPIO::ScreenGPIO(uint8_t rst_offset, uint8_t data_offset):rst_offset(rst_offset), data_offset(data_offset),chipName("/dev/gpiochip0"),
         rstPin(chipName.prepare_request().set_consumer("screen").add_line_settings(rst_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
         dataPin(chipName.prepare_request().set_consumer("screen").add_line_settings(data_offset,gpiod::line_settings().set_direction(gpiod::line::direction::OUTPUT)).do_request()),
-        display("/dev/spidev0.1",1000000,0,8,true,false) //changed from spidev0.0 -> 0.1
+        display("/dev/spidev0.1",1000000,0,8,false,true) //changed from spidev0.0 -> 0.1
         {
           Reset_Screen();
           std::this_thread::sleep_for(std::chrono::milliseconds(150));

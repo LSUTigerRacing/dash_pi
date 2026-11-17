@@ -26,7 +26,7 @@
 
 #define HOR 240
 #define VER 320
-#define LCD_BUF_LINES 180
+#define LCD_BUF_LINES 20
 
 #ifndef DESKTOP_MODE
 static ScreenGPIO display (16,18); //put actual pin numbers for reset and data pins
@@ -86,8 +86,8 @@ static void color_cb(lv_display_t * disp, const uint8_t *cmd, size_t cmd_size, u
     if (param_size > 0) {
         display.Send_Data(param, param_size);
     }
+    lv_display_flush_ready(disp);
 }
-
 
 /**
  * @brief Custom flush call back that is currently not needed but might be needed later
@@ -162,8 +162,7 @@ int main(int argvc, char **argv)
 
     buf1 = (uint8_t *)lv_malloc(buf_size);
     buf2 = (uint8_t *)lv_malloc(buf_size); // for double buffering
-
-    if (buf1 == NULL)
+    if (buf1 == NULL || buf2 == NULL)
     {
         LV_LOG_ERROR("display draw buffer malloc failed");
         return -1;

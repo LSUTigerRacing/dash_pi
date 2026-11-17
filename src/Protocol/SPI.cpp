@@ -8,6 +8,7 @@
 #include <string>
 #include <linux/types.h>
 #include <system_error>
+#include <algorithm>
 
 //class SPIDevice{ //Anthony Meiers - commented out lines are redefinitions from SPI.hpp.
 //    private: 
@@ -35,7 +36,8 @@
                 ioctl(file_descriptor, SPI_IOC_RD_BITS_PER_WORD, &bits);
             }
             if(write){
-                ioctl(file_descriptor, SPI_IOC_WR_MODE, SPI_MODE_0);
+                uint8_t spi_mode = mode;
+                ioctl(file_descriptor, SPI_IOC_WR_MODE, &spi_mode);
                 ioctl(file_descriptor, SPI_IOC_WR_MAX_SPEED_HZ,&clk_Speed);
                 ioctl(file_descriptor,SPI_IOC_WR_BITS_PER_WORD,&bits);
             }
@@ -87,18 +89,29 @@
         }
 
         int SPIDevice::SPI_Write(const uint8_t* data, size_t len){
-            std::vector<uint8_t> txData(len);
-            int ret;
-            
+            const size_t max_chunk = 4096;
+            int total              = 0;
+            while (len > 0) {
+                size_t chunk = std::min(len, max_chunk);
+                
             spi_ioc_transfer spiTran = {};
             spiTran.tx_buf = reinterpret_cast<unsigned long>(data);
-            spiTran.len = len;
+            spiTran.len = chunk;
             spiTran.cs_change = false;
             spiTran.speed_hz = 0;
             spiTran.delay_usecs = 0;
             spiTran.bits_per_word = 0; 
 
-            ret = ioctl(file_descriptor,SPI_IOC_MESSAGE(1), &spiTran);
-
-            return ret;
+            int ret = ioctl(file_descriptor,SPI_IOC_MESSAGE(1), &spiTran);
+            if (ret < 0){
+                return ret;
+            }
+            
+            total += ret;
+            data += chunk;
+            len -= chunk;
         }
+            return total;
+    }
+
+//};
