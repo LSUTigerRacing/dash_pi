@@ -17,6 +17,10 @@ add_executable(
     src/main.cpp
 )
 
+#Line was misplaced below the if(DESKTOP_MODE), 
+#which caused compilation errors. - Anthony
+target_link_libraries(racecar PRIVATE lvgl ui) 
+
 if(DESKTOP_MODE)
   find_package(SDL2 REQUIRED)
   target_compile_definitions(racecar PRIVATE DESKTOP_MODE)
@@ -25,7 +29,5 @@ if(DESKTOP_MODE)
 else()
   target_link_libraries(racecar PRIVATE Protocol ui)
 endif()
-
-target_link_libraries(racecar PRIVATE lvgl ui)
 
 message("exit")
